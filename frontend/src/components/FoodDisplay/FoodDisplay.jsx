@@ -11,20 +11,27 @@ const FoodDisplay = ({ category }) => {
       <h2>Top dishes near you</h2>
       <div className="food-display-list">
         {food_list.map((item, index) => {
-          return (
-            <FoodItem
-              key={index}
-              id={item._id}
-              name={typeof item.name === "string" ? item.name : "Unknown Name"}
-              price={typeof item.price === "number" ? item.price : "N/A"}
-              description={
-                typeof item.description === "string"
-                  ? item.description
-                  : "No description available"
-              }
-              image={item.image}
-            />
-          );
+          {
+            console.log(category, item.category);
+          }
+          if ((category === "All" || category === item.category)) {
+            return (
+              <FoodItem
+                key={index}
+                id={item._id}
+                name={
+                  typeof item.name === "string" ? item.name : "Unknown Name"
+                }
+                price={typeof item.price === "number" ? item.price : "N/A"}
+                description={
+                  typeof item.description === "string"
+                    ? item.description
+                    : "No description available"
+                }
+                image={item.image}
+              />
+            );
+          }
         })}
       </div>
     </div>
