@@ -39,6 +39,7 @@ const Add = () => {
       });
       setImage(false);
     } else {
+      console.log("error");
     }
   };
 
