@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./Add.css";
 import { assets } from "../../assets/assets";
 import axios from "axios";
+import { toast } from "react-toastify";
 
-const Add = () => {
-  const url = "http://localhost:4000";
-  const [image, setImage] = useState(false);
+const Add = ({ url }) => {
+  // const url = "http://localhost:4000";
+  const [image, setImage] = useState(null);
   const [data, setData] = useState({
     name: "",
     description: "",
@@ -28,24 +29,26 @@ const Add = () => {
     formData.append("price", Number(data.price));
     formData.append("category", data.category);
     formData.append("image", image);
-    const response = await axios.post(`${url}/api/food/add`, FormData);
 
-    if (response.data.success) {
-      setData({
-        name: "",
-        description: "",
-        price: "",
-        category: "Salad",
-      });
-      setImage(false);
-    } else {
-      console.log("error");
+    try {
+      const response = await axios.post(`${url}/api/food/add`, formData);
+
+      if (response.data.success) {
+        setData({
+          name: "",
+          description: "",
+          price: "",
+          category: "Salad",
+        });
+        setImage(null);
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error submitting form: ", error);
     }
   };
-
-  // useEffect(() => {
-  //   console.log(data);
-  // }, [data]);
 
   return (
     <div className="add">
@@ -57,7 +60,6 @@ const Add = () => {
               src={image ? URL.createObjectURL(image) : assets.upload_area}
               alt=""
             />
-            {/* to display the uploaded image */}
           </label>
           <input
             onChange={(e) => setImage(e.target.files[0])}
@@ -75,6 +77,7 @@ const Add = () => {
             type="text"
             name="name"
             placeholder="Type here"
+            required
           />
         </div>
         <div className="add-product-description flex-col">
@@ -85,6 +88,7 @@ const Add = () => {
             name="description"
             rows="6"
             placeholder="Write description here"
+            required
           ></textarea>
         </div>
         <div className="add-category-price">
@@ -106,9 +110,10 @@ const Add = () => {
             <input
               onChange={onChangeHandler}
               value={data.price}
-              type="Number"
+              type="number"
               name="price"
               placeholder="Enter value in rupees"
+              required
             />
           </div>
         </div>
