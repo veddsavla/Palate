@@ -82,6 +82,7 @@ export const assets = {
   logout_icon,
   bag_icon,
   parcel_icon,
+  defaultImage: "path/to/default_image.png",
 };
 
 export const menu_list = [

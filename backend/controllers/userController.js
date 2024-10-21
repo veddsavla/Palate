@@ -5,7 +5,28 @@ import validator from "validator";
 import "dotenv/config";
 
 // login user
-const loginUser = async (req, res) => {};
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.json({ success: false, message: "user does not exist" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.json({ success: false, message: "incorrect password" });
+    }
+
+    const token = createToken(user._id);
+    return res.json({ success: true, token });
+  } catch (error) {
+    console.log(error);
+    return res.json({ success: false, message: "error" });
+  }
+};
 
 // Function to create JWT token
 const createToken = (id) => {

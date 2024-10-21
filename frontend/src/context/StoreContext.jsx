@@ -1,10 +1,14 @@
 import React, { useEffect, useState, createContext } from "react";
-import { food_list } from "../assets/assets";
+import axios from "axios";
 
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
+  const url = "http://localhost:4000";
+  const [token, setToken] = useState("");
+  const [food_list, setFoodList] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
 
   const addToCart = (itemId) => {
     setCartItems((prev) => ({
@@ -28,11 +32,37 @@ const StoreContextProvider = (props) => {
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
         let itemInfo = food_list.find((product) => product._id === item);
-        totalAmount += itemInfo.price * cartItems[item];
+        if (itemInfo) {
+          totalAmount += itemInfo.price * cartItems[item];
+        }
       }
     }
     return totalAmount;
   };
+
+  const fetchFoodList = async () => {
+    setLoading(true); // Start loading
+    try {
+      const response = await axios.get(url + "/api/food/list");
+      console.log("Fetched food list:", response.data.data); // Log fetched data
+      setFoodList(response.data.data); // Ensure this matches the API response structure
+    } catch (error) {
+      console.error("Error fetching food list:", error.response ? error.response.data : error.message);
+    } finally {
+      setLoading(false); // End loading
+    }
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      await fetchFoodList();
+      const storedToken = localStorage.getItem("token");
+      if (storedToken) {
+        setToken(storedToken);
+      }
+    };
+    loadData();
+  }, []);
 
   const contextValue = {
     food_list,
@@ -41,11 +71,15 @@ const StoreContextProvider = (props) => {
     addToCart,
     removeFromCart,
     getTotalCartAmount,
+    url,
+    token,
+    setToken,
+    loading, // Add loading to context
   };
 
   return (
     <StoreContext.Provider value={contextValue}>
-      {props.children}
+      {loading ? <div>Loading...</div> : props.children} {/* Show loading state */}
     </StoreContext.Provider>
   );
 };
