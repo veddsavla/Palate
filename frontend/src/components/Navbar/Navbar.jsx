@@ -42,7 +42,7 @@ const Navbar = ({ setShowLogin }) => {
         <li
           onClick={() => {
             setMenu("menu");
-            handleScroll("menu"); // Add id for menu section
+            handleScroll("explore-menu"); // Add id for menu section
           }}
           className={menu === "menu" ? "active" : ""}
         >

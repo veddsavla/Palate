@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.css";
 
 const Header = () => {
+  const [menu, setMenu] = useState("home");
+
+  const handleScroll = (sectionId) => {
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="header">
       <div className="header-contents">
@@ -12,7 +21,15 @@ const Header = () => {
           vel fugiat? Voluptates assumenda ad enim eaque quae quibusdam quod
           mollitia.
         </p>
-        <button>View Menu</button>
+        <button
+          onClick={() => {
+            setMenu("menu");
+            handleScroll("explore-menu");
+          }}
+          className={menu === "menu" ? "active" : ""}
+        >
+          View Menu
+        </button>
       </div>
     </div>
   );
