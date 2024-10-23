@@ -1,5 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
-import PropTypes from "prop-types"; // Import PropTypes
+import React, { useContext, useState } from "react";
 import "./LoginPopup.css";
 import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
@@ -23,23 +22,49 @@ const LoginPopup = ({ setShowLogin }) => {
 
   const onLogin = async (event) => {
     event.preventDefault();
-    let newUrl = url;
-    if (currState === "Login") {
-      newUrl += "api/user/login";
-    } else {
-      newUrl += "api/user/register";
+
+    if (!url) {
+      console.error("API base URL is missing.");
+      return;
     }
 
-    const response = await axios.post(newUrl, data);
+    let newUrl =
+      url + (currState === "Login" ? "/api/user/login" : "/api/user/register");
 
-    if (response.data.success) {
-      setToken(response.data.token);
-      localStorage.setItem("token", response.data.token);
-      setShowLogin(false);
-    } else {
-      alert(response.data.message);
+    try {
+      const response = await axios.post(newUrl, data);
+
+      if (response.data.success) {
+        setToken(response.data.token);
+        localStorage.setItem("token", response.data.token);
+        setShowLogin(false);
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error during login/signup:", error);
     }
   };
+
+  // const onLogin = async (event) => {
+  //   event.preventDefault();
+  //   let newUrl = url;
+  //   if (currState === "Login") {
+  //     newUrl += "api/user/login";
+  //   } else {
+  //     newUrl += "api/user/register";
+  //   }
+
+  //   const response = await axios.post(newUrl, data);
+
+  //   if (response.data.success) {
+  //     setToken(response.data.token);
+  //     localStorage.setItem("token", response.data.token);
+  //     setShowLogin(false);
+  //   } else {
+  //     alert(response.data.message);
+  //   }
+  // };
 
   return (
     <div className="login-popup">
@@ -104,11 +129,6 @@ const LoginPopup = ({ setShowLogin }) => {
       </form>
     </div>
   );
-};
-
-// Add prop-types validation
-LoginPopup.propTypes = {
-  setShowLogin: PropTypes.func.isRequired, // Expect a function and make it required
 };
 
 export default LoginPopup;

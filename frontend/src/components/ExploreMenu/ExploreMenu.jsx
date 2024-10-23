@@ -12,6 +12,7 @@ const ExploreMenu = ({ category, setCategory }) => {
         nihil, ab assumenda necessitatibus consequuntur? Voluptas illum et neque
         debitis.
       </p>
+
       <div className="explore-menu-list">
         {menu_list.map((item, index) => {
           return (

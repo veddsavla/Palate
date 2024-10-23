@@ -22,6 +22,82 @@
   gap: 30px;
   text-align: center;
   margin: 20px 0px;
+  overflow-x: auto; /* Ensure scrollable area remains visible */
+  padding: 0 15px; /* Add padding to prevent images from being cut */
+}
+
+.explore-menu-list::-webkit-scrollbar {
+  display: none;
+}
+
+.explore-menu-list-item {
+  padding-top: 10px;
+  position: relative; /* Ensure z-index control on hover */
+  flex-shrink: 0; /* Prevent shrinking when scaling */
+}
+
+.explore-menu-list-item img {
+  width: 7.5vw;
+  min-width: 80px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+  border: 4px solid transparent; /* Keep transparent border initially */
+}
+
+.explore-menu-list-item img:hover {
+  transform: scale(1.1); /* Enlarge image on hover */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add shadow for visual effect */
+  border-color: tomato; /* Change border to tomato on hover */
+}
+
+.explore-menu-list-item p {
+  margin-top: 10px;
+  color: #747474;
+  font-size: max(1.4vx, 16px);
+  cursor: pointer;
+}
+
+.explore-menu hr {
+  margin: 10px 0px;
+  height: 2px;
+  background-color: #e2e2e2;
+  border: none;
+}
+
+.explore-menu-list-item:hover {
+  z-index: 1; /* Bring hovered item to the front */
+}
+
+.explore-menu-list-item img.active {
+  border: 4px solid tomato; /* Maintain active state border */
+  padding: 2px;
+}
+
+/* .explore-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 80px;
+}
+
+.explore-menu h1 {
+  color: #262626;
+  font-weight: 500;
+}
+
+.explore-menu-text {
+  max-width: 60%;
+  color: #808080;
+}
+
+.explore-menu-list {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  text-align: center;
+  margin: 20px 0px;
   overflow-x: scroll;
 }
 
@@ -58,4 +134,4 @@
 .explore-menu-list-item img.active {
   border: 4px solid tomato;
   padding: 2px;
-}
+} */
