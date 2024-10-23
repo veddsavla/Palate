@@ -17,7 +17,6 @@ const Navbar = ({ setShowLogin }) => {
     navigate("/");
   };
 
-  // Function to handle smooth scrolling
   const handleScroll = (sectionId) => {
     const section = document.getElementById(sectionId);
     if (section) {
